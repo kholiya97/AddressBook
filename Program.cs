@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Address_Book_System
-{    /*     Ability to add a new Contact to Address Book - Use Console to add person details from AddressBookMain class
-            - Use Object Oriented Concepts to manage relationship between AddressBook and Contact Person
-    */
+{   
     class Person
     {
         private String lname, address, city, state, phone, zip, email; //Declaring (Creating) Variables
@@ -56,10 +54,7 @@ namespace Address_Book_System
             Console.Write("Enter Email:- ");
             string Email = Console.ReadLine();
             Person person = new Person(firstName, lastName, address, city, state, pNumber,zip, Email);
-            Person person1 = new Person(firstName, lastName, address, city, state, pNumber, zip, Email);
             Console.WriteLine(person);
-            Console.ReadLine();
-            Console.WriteLine(person1);
             Console.ReadLine();
         }
     }
