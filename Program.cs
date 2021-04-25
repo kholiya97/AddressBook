@@ -12,7 +12,7 @@ namespace AddressBook
         private Dictionary<string, Person> addressBook = new Dictionary<string, Person>(); //create addressBook Dictionary and string is (Key)(string=datatype) and person is (value)
 
         //method of interface
-        public void AddContact(string firstName, string lastName, string address, string city, string state, string email, int zip, long phoneNumber)
+        public void AddContact(string firstName, string lastName, string address, string city, string state, string email, int zip, long phoneNumber)//addcontact method implemented from interface IPERSON
         {
             Person contact = new Person(); // creating object of person class
             contact.FirstName = firstName;
@@ -120,7 +120,7 @@ namespace AddressBook
     public class Person
     {
         //creating properties 
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } // getters and seters for 1st name and likewise for others 
         public string LastName { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
