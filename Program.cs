@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Address_Book_System
 {   
@@ -37,6 +33,14 @@ namespace Address_Book_System
         }
          static void Main(string[]args)
         {
+namespace Addres
+{
+    class Contacts
+    {
+        static void Main(string[] args)  //Main method
+        {
+            Console.WriteLine("******* Welcome To AddressBook *******");
+
             Console.Write("Enter First Name:- ");  // Take input 
             string firstName = Console.ReadLine(); //Store input in firstName variable
             Console.Write("Enter Last Name:- ");
