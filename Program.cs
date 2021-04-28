@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AddressBook
 {
-
     class AddressBook : IPerson
     {
         List<Person> adressBookList = new List<Person>(); //creating list
@@ -36,17 +31,50 @@ namespace AddressBook
         }
 
         public void displayPerson()//body of displayperson interface method
+        private Dictionary<string, Person> addressBook = new Dictionary<string, Person>(); //create addressBook Dictionary and string is (Key)(string=datatype) and person is (value)
+
+        //method of interface
+        public void AddContact(string firstName, string lastName, string address, string city, string state, string email, int zip, long phoneNumber)//addcontact method implemented from interface IPERSON
+        {
+            Person contact = new Person(); // creating object of person class
+            contact.FirstName = firstName;
+            contact.LastName = lastName;
+            contact.Address = address;
+            contact.City = city;
+            contact.State = state;
+            contact.Email = email;
+            int Zip = zip;
+            contact.PhoneNumber = phoneNumber;
+            addressBook.Add(contact.FirstName, contact);
+        }
+        public void ViewContact()
+        {
+            //all Tvalues in dictionary access by KeyValuePair Class
+            foreach (KeyValuePair<string, Person> item in addressBook) //print all values using foreach  in addressBook Dictionary
+            {
+                Console.WriteLine("First Name : " + item.Value.FirstName);
+                Console.WriteLine("Last Name : " + item.Value.LastName);
+                Console.WriteLine("Address : " + item.Value.Address);
+                Console.WriteLine("City : " + item.Value.City);
+                Console.WriteLine("State : " + item.Value.State);
+                Console.WriteLine("Email : " + item.Value.Email);
+                Console.WriteLine("Zip : " + item.Value.Zip);
+                Console.WriteLine("Phone Number : " + item.Value.PhoneNumber + "\n");
+
+            }
+        }
+        
+        
+        public void EditContact(string name) //method in inteface pass argument name
         {
             Console.WriteLine("\nEntered Person Details is:");
             foreach (var person in adressBookList)
             {
                 Console.WriteLine("FirstName: {0}, LastName: {1}, city: {2}, state: {3}, email: {4}, phoneNumber: {5}", person.FirstName, person.LastName, person.City, person.State, person.Email, person.PhoneNumber);
             }
-
         }
         public void editPerson()//body of editperson interface method
         {
-
             Console.WriteLine("\n enter First name to edit details:");//take input
             string name = Console.ReadLine();//store input name variable
             foreach (var person in adressBookList)
@@ -100,7 +128,6 @@ namespace AddressBook
 
         public void deletePerson()//body of deleteperson interface method
         {
-
             Console.WriteLine("Enter firstName of the user you want to remove");
             string firstName = Console.ReadLine();
 
@@ -109,7 +136,15 @@ namespace AddressBook
 
             adressBookList.RemoveAll(item => item.FirstName == firstName && item.LastName == lastName);
 
-
+            if (addressBook.ContainsKey(name))
+            {
+                addressBook.Remove(name);
+                Console.WriteLine("\nDeleted Succesfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("\nIt Is Not Found.\n");
+            }
         }
     }
     interface IPerson
@@ -122,7 +157,6 @@ namespace AddressBook
 
     public class Person
     {
-
         public string FirstName;
         public string LastName;
         public string City;
@@ -197,11 +231,19 @@ namespace AddressBook
         {
             Email = email;
         }
+        //creating properties 
+        public string FirstName { get; set; } // getters and seters for 1st name and likewise for others 
+        public string LastName { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zip { get; set; }
+        public string Email { get; set; }
+        public long PhoneNumber { get; set; }
     }
+  
     class Program
     {
-
-
         static void Main(string[] args)
         {
             Console.WriteLine("-------------Welcome to Address Book Program------------ ");
@@ -237,6 +279,31 @@ namespace AddressBook
                         break;
                 }//end switch case
             }
+                }
+            } while (Choice != 4);
+
+    class Contacts
+    {
+        static void Main(string[] args)  //Main method
+        {
+            Console.WriteLine("******* Welcome To AddressBook *******");
+
+            Console.Write("Enter First Name:- ");  // Take input 
+            string firstName = Console.ReadLine(); //Store input in firstName variable
+            Console.Write("Enter Last Name:- ");
+            string lastName = Console.ReadLine();
+            Console.Write("Enter Address:- ");
+            string address = Console.ReadLine();
+            Console.Write("Enter City:- ");
+            string city = Console.ReadLine();
+            Console.Write("Enter State:- ");
+            string state = Console.ReadLine();
+            Console.Write("Enter Zip Code :- ");
+            string zip = Console.ReadLine();
+            Console.Write("Enter Phone Number:- ");
+            string pNumber = Console.ReadLine();
+            Console.Write("Enter Email:- ");
+            string Email = Console.ReadLine();
         }
     }
 }
