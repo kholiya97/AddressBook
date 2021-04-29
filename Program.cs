@@ -40,7 +40,9 @@ namespace Addres
         private Dictionary<string, Person> addressBook = new Dictionary<string, Person>(); //create addressBook Dictionary and string is (Key)(string=datatype) and person is (value)
 
         //method of interface
+        public void AddContact(string firstName, string lastName, string address, string city, string state, string email, int zip, long phoneNumber)// addcontact method implemented from interface IPERSON
         public void AddContact(string firstName, string lastName, string address, string city, string state, string email, int zip, long phoneNumber)//addcontact method implemented from interface IPERSON
+
         {
             Person contact = new Person(); // creating object of person class
             contact.FirstName = firstName;
@@ -69,8 +71,7 @@ namespace Addres
 
             }
         }
-        
-        
+      
         public void EditContact(string name) //method in inteface pass argument name
         {
             foreach (KeyValuePair<string, Person> item in addressBook) //use loop foreach
@@ -119,7 +120,7 @@ namespace Addres
                 }
             }
         }
-
+      
         public void DeleteContact(string name)
         {
             if (addressBook.ContainsKey(name))
@@ -140,9 +141,10 @@ namespace Addres
         void DeleteContact(string name);
         // void ViewContact();
     }
+  
     public class Person
     {
-        //creating properties 
+        public string FirstName { get; set; } // getters and seeters for 1st name and likewise for others 
         public string FirstName { get; set; } // getters and seters for 1st name and likewise for others 
         public string LastName { get; set; }
         public string Address { get; set; }
@@ -158,6 +160,28 @@ namespace Addres
         {
             Console.WriteLine("-------------Welcome to Address Book Program------------ ");
             AddressBook addressBook = new AddressBook(); //object of AddessBook class
+
+            Console.WriteLine("Enter First Name :");
+            string firstName = Console.ReadLine();
+            Console.WriteLine("Enter Last Name :");
+            string lastName = Console.ReadLine();
+            Console.WriteLine("Enter Address :");
+            string address = Console.ReadLine();
+            Console.WriteLine("Enter City :");
+            string city = Console.ReadLine();
+            Console.WriteLine("Enter State :");
+            string state = Console.ReadLine();
+            Console.WriteLine("Enter Email :");
+            string email = Console.ReadLine();
+            Console.WriteLine("Enter Zip :");
+            int zip = Convert.ToInt32(Console.ReadLine());//conver into int using ToInt32()
+            Console.WriteLine("Enter Phone Number :");
+            long phoneNumber = Convert.ToInt64(Console.ReadLine());
+            addressBook.AddContact(firstName, lastName, address, city, state, email, zip, phoneNumber);
+            addressBook.ViewContact();//calling method
+            addressBook.EditContact(firstName);
+            addressBook.ViewContact();//calling method
+            Console.Read();
 
             int Choice = Convert.ToInt32(Console.ReadLine());
             do
