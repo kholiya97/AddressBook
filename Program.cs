@@ -7,14 +7,34 @@ using System.Threading.Tasks;
 namespace AddressBook
 {
 
-    class AddressBook : IPerson
+    public class AddressBook
     {
-        List<Person> adressBookList = new List<Person>();
 
-        public void AddContact(string firstName, string lastName, string address, string city, string state, string phoneNumber, string email)
+
+        List<Person> adressBookList;
+        public AddressBook()
         {
-            Person person = new Person(firstName, lastName, city, state, email, phoneNumber);
-            adressBookList.Add(person);
+            this.adressBookList = new List<Person>();
+        }
+        public void AddContact(string firstName, string lastName, string address, string city, string state, long phoneNumber, string email)
+        {
+            bool flag = this.adressBookList.Any(item => item.FirstName == firstName && item.LastName == lastName);
+            if (!flag)
+            {
+                Person person = new Person(firstName, lastName, city, state, email, phoneNumber);
+                adressBookList.Add(person);
+                Console.WriteLine("Contact added Successfully");
+            }
+
+            if (!flag)
+            {
+                Console.WriteLine("Exit");
+            }
+
+            else
+            {
+                Console.WriteLine("{0}{1} this contact already exist in Address Book :", firstName, lastName);
+            }
         }
         public void displayPerson()
         {
@@ -43,7 +63,7 @@ namespace AddressBook
                     {
                         case 1:
                             Console.WriteLine("enter new Mobile number:");
-                            string mobileNo = Console.ReadLine();
+                            long mobileNo = Convert.ToInt64(Console.ReadLine());
                             person.setPhoneNumber(mobileNo);
                             Console.WriteLine("mobile no. is updated\n");
                             break;
@@ -80,32 +100,46 @@ namespace AddressBook
             Console.WriteLine("Enter lastname of the user you want to remove");
             var lastName = Console.ReadLine();
             adressBookList.RemoveAll(item => item.FirstName == firstName && item.LastName == lastName);
+
+        }
+        public bool CheckExist(string fname)  //Check exist method
+        {
+            int flag = 0;
+            foreach (Person person in adressBookList) //Check list of class person
+            {
+                if (person.FirstName.Equals(fname)) //check first name and user input are equal or not
+                {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 1)
+            {
+                return true;
+            }
+            return false;
         }
     }
-
     /// <summary>
     /// signature of interface
     /// </summary>
     public interface IPerson
     {
-        // void addPerson();
-        void displayPerson();
-        void editPerson();
-        void deletePerson();
+        void AddContact(string firstName, string lastName, string address, string city, string state, string email, int zip, long phoneNumber, string bookName);
+        void ViewContact(string name, string bookName);
+        void EditContact(string name, string bookName);
+        void DeleteContact(string name, string bookName);
+        void AddAddressBook(string bookName);
     }
-
     public class Person
     {
-        //instance variable
         public string FirstName;
         public string LastName;
         public string city;
         public string state;
         public string email;
-        public string phoneNumber;
-
-        //parameterized constructor for initializing instance member
-        public Person(string firstName, string lastName, string city, string state, string email, string phoneNumber)//Parameterized Constructor
+        public long phoneNumber;
+        public Person(string firstName, string lastName, string city, string state, string email, long phoneNumber)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -114,32 +148,32 @@ namespace AddressBook
             this.email = email;
             this.phoneNumber = phoneNumber;
         }
-        public String getFirstName() /// get method returns the value of the variable FirstName.
-		{
+        public String getFirstName()
+        {
             return FirstName;
         }
 
-        public void setFirstName(String firstName)  // set method assigns a value to the name variable.
+        public void setFirstName(String firstName)
         {
             this.FirstName = firstName;
         }
 
-        public String getLastName() //get method returns the value of the variable LastName.
+        public String getLastName()
         {
             return LastName;
         }
 
-        public void setLastName(String lastName) //set method assigns a value to the name variable.
+        public void setLastName(String lastName)
         {
             this.LastName = lastName;
         }
 
-        public String getCity()//get method returns the value of the variable city.
+        public String getCity()
         {
             return city;
         }
 
-        public void setCity(String city)//get method returns the value of the variable city.
+        public void setCity(String city)
         {
             this.city = city;
         }
@@ -153,12 +187,12 @@ namespace AddressBook
         {
             this.state = state;
         }
-        public String getPhoneNumber()
+        public long getPhoneNumber()
         {
             return phoneNumber;
         }
 
-        public void setPhoneNumber(String phoneNumber)
+        public void setPhoneNumber(long phoneNumber)
         {
             this.phoneNumber = phoneNumber;
         }
@@ -171,123 +205,122 @@ namespace AddressBook
         public void setEmail(String email)
         {
             this.email = email;
-
         }
-        class Program
+    }
+    class Program
+    {
+        /// <summary>
+        /// Entry ponit
+        /// </summary>
+        /// <param name="args"></param>
+        AddressBook obj = new AddressBook();
+        public static void Main(string[] args)
         {
-            /// <summary>
-            /// Entry ponit
-            /// </summary>
-            /// <param name="args"></param>
-            public static void Main(string[] args)
+            Console.WriteLine("Welcome in Address book System");
+
+            ///create dictionary and 
+            ///Dict is name of dictionary
+            Dictionary<string, AddressBook> Dict = new Dictionary<string, AddressBook>();//string is Tkey and AddressBook is TValue.
+            bool ProgramIsRunning = true;
+
+            Console.WriteLine("\nHow many address Book you want to create : ");
+            int numAddressBooks = Convert.ToInt32(Console.ReadLine()); //store and convert into int using numAdressBooks variable.
+
+            for (int i = 1; i <= numAddressBooks; i++)
             {
-                Console.WriteLine("Welcome in Address book System");
-
-                ///create dictionary and 
-                ///Dict is name of dictionary
-                Dictionary<string, AddressBook> Dict = new Dictionary<string, AddressBook>();//string is Tkey and AddressBook is TValue.
-                bool ProgramIsRunning = true;
-
-                Console.WriteLine("\nHow many address Book you want to create : ");
-                int numAddressBooks = Convert.ToInt32(Console.ReadLine()); //store and convert into int using numAdressBooks variable.
-
-                for (int i = 1; i <= numAddressBooks; i++)
-                {
-                    Console.WriteLine("Enter the name of address book " + i + ": ");
-                    string bookName = Console.ReadLine();
-                    AddressBook addressBook = new AddressBook(); //creating object of AddressBook class
-                    Dict.Add(bookName, addressBook); //add element in dictionary
-                }
-                Console.WriteLine("\nYou have created following Address Books : ");
-                foreach (var item in Dict) //var is used and it is store any data type value.
-                {
-                    Console.WriteLine("{0}", item.Key);
-                }
-                while (ProgramIsRunning)
-                {
-                    Console.WriteLine("\nChoose option to procced further \n1.Add Contact \n2.Edit Contact \n3.Delete Contact  \n4.Display Contacts \n5.Exit");
-                    int choice = Convert.ToInt32(Console.ReadLine()); ///store and convert into int using choice variable
-                    switch (choice)
-                    {
-                        case 1:
-                            Console.WriteLine("\nEnter Existing Address Book Name for adding contacts");
-                            string contactName = Console.ReadLine();
-                            if (Dict.ContainsKey(contactName))
-                            {
-                                Console.WriteLine("\nEnter the number of contacts you want to add in address book");
-                                int numberOfContacts = Convert.ToInt32(Console.ReadLine());
-                                for (int i = 1; i <= numberOfContacts; i++)
-                                {
-                                    addContactBook(Dict[contactName]);
-                                }
-                                Dict[contactName].displayPerson();
-                            }
-                            else
-                            {
-                                Console.WriteLine("No AddressBook exist with name {0}", contactName);
-                            }
-                            break;
-                        case 2:
-                            Console.WriteLine("Enter Address Book Name for edit contact");
-                            string editcontactName = Console.ReadLine();
-                            if (Dict.ContainsKey(editcontactName))
-                            {
-                                Dict[editcontactName].editPerson();
-                                Dict[editcontactName].displayPerson();
-                            }
-                            else
-                            {
-                                Console.WriteLine("No Address book exist with name {0} ", editcontactName);
-                            }
-                            break;
-                        case 3:
-                            Console.WriteLine("\nEnter Address Book Name for delete contact");
-                            string deleteContact = Console.ReadLine();
-                            if (Dict.ContainsKey(deleteContact))
-                            {
-                                Dict[deleteContact].deletePerson();
-                                Dict[deleteContact].displayPerson();
-                            }
-                            else
-                            {
-                                Console.WriteLine("No Address book exist with name {0} ", deleteContact);
-                            }
-                            break;
-                        case 4:
-                            Console.WriteLine("\nEnter Address Book Name for display contacts");
-                            string displayContactsInAddressBook = Console.ReadLine();
-                            Dict[displayContactsInAddressBook].displayPerson();
-                            break;
-                        case 5:
-                            ProgramIsRunning = false;
-                            break;
-                        default:
-                            Console.WriteLine("Please enter valid option");
-                            break;
-                    }
-                }
-
-                void addContactBook(AddressBook addressBook)
-                {
-                    Console.WriteLine("Enter First Name : ");
-                    string firstName = Console.ReadLine();
-                    Console.WriteLine("Enter Last Name : ");
-                    string lastName = Console.ReadLine();
-                    Console.WriteLine("Enter Address : ");
-                    string address = Console.ReadLine();
-                    Console.WriteLine("Enter City : ");
-                    string city = Console.ReadLine();
-                    Console.WriteLine("Enter State : ");
-                    string state = Console.ReadLine();
-                    Console.WriteLine("Enter Phone Number : ");
-                    string phoneNumber = Console.ReadLine();
-                    Console.WriteLine("Enter Email id :");
-                    string email = Console.ReadLine();
-                    addressBook.AddContact(firstName, lastName, address, city, state, phoneNumber, email);
-                }
-
+                Console.WriteLine("Enter the name of address book " + i + ": ");
+                string bookName = Console.ReadLine();
+                AddressBook addressBook = new AddressBook(); //creating object of AddressBook class
+                Dict.Add(bookName, addressBook); //add element in dictionary
             }
+            Console.WriteLine("\nYou have created following Address Books : ");
+            foreach (var item in Dict) //var is used and it is store any data type value.
+            {
+                Console.WriteLine("{0}", item.Key);
+            }
+            while (ProgramIsRunning)
+            {
+                Console.WriteLine("\nChoose option to procced further \n1.Add Contact \n2.Edit Contact \n3.Delete Contact  \n4.Display Contacts \n5.Exit");
+                int choice = Convert.ToInt32(Console.ReadLine()); ///store and convert into int using choice variable
+                switch (choice)
+                {
+                    case 1:
+                        Console.WriteLine("\nEnter Existing Address Book Name for adding contacts");
+                        string contactName = Console.ReadLine();
+                        if (Dict.ContainsKey(contactName))
+                        {
+                            Console.WriteLine("\nEnter the number of contacts you want to add in address book");
+                            int numberOfContacts = Convert.ToInt32(Console.ReadLine());
+                            for (int i = 1; i <= numberOfContacts; i++)
+                            {
+                                addContactBook(Dict[contactName]);
+                            }
+                            Dict[contactName].displayPerson();
+                        }
+                        else
+                        {
+                            Console.WriteLine("No AddressBook exist with name {0}", contactName);
+                        }
+                        break;
+                    case 2:
+                        Console.WriteLine("Enter Address Book Name for edit contact");
+                        string editcontactName = Console.ReadLine();
+                        if (Dict.ContainsKey(editcontactName))
+                        {
+                            Dict[editcontactName].editPerson();
+                            Dict[editcontactName].displayPerson();
+                        }
+                        else
+                        {
+                            Console.WriteLine("No Address book exist with name {0} ", editcontactName);
+                        }
+                        break;
+                    case 3:
+                        Console.WriteLine("\nEnter Address Book Name for delete contact");
+                        string deleteContact = Console.ReadLine();
+                        if (Dict.ContainsKey(deleteContact))
+                        {
+                            Dict[deleteContact].deletePerson();
+                            Dict[deleteContact].displayPerson();
+                        }
+                        else
+                        {
+                            Console.WriteLine("No Address book exist with name {0} ", deleteContact);
+                        }
+                        break;
+                    case 4:
+                        Console.WriteLine("\nEnter Address Book Name for display contacts");
+                        string displayContactsInAddressBook = Console.ReadLine();
+                        Dict[displayContactsInAddressBook].displayPerson();
+                        break;
+                    case 5:
+                        ProgramIsRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Please enter valid option");
+                        break;
+                }
+            }
+
+            void addContactBook(AddressBook addressBook)
+            {
+                Console.WriteLine("Enter First Name : ");
+                string firstName = Console.ReadLine();
+                Console.WriteLine("Enter Last Name : ");
+                string lastName = Console.ReadLine();
+                Console.WriteLine("Enter Address : ");
+                string address = Console.ReadLine();
+                Console.WriteLine("Enter City : ");
+                string city = Console.ReadLine();
+                Console.WriteLine("Enter State : ");
+                string state = Console.ReadLine();
+                Console.WriteLine("Enter Phone Number : ");
+                long phoneNumber = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter Email id :");
+                string email = Console.ReadLine();
+                addressBook.AddContact(firstName, lastName, address, city, state, phoneNumber, email);
+            }
+
         }
     }
 }
-
