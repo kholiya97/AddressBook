@@ -33,7 +33,7 @@ namespace Address_Book_System
         }
          static void Main(string[]args)
         {
-namespace Addres
+
 {
     class AddressBook : IPerson
     {
