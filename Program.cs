@@ -34,7 +34,7 @@ namespace Address_Book_System
          static void Main(string[]args)
         {
 
-{
+
     class AddressBook : IPerson
     {
         List<Person> adressBookList = new List<Person>(); //creating list
